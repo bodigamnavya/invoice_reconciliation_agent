@@ -38,6 +38,13 @@ def create_app():
     with app.app_context():
         try:
             init_db()
+            db = SessionLocal()
+            from backend.models.user_model import User
+            if db.query(User).count() == 0:
+                logger.info("Empty database detected. Auto-seeding demo scenarios...")
+                from database.seed_data import seed_database
+                seed_database()
+            db.close()
         except Exception as e:
             logger.error(f"Database initialization error: {e}")
 

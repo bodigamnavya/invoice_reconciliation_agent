@@ -13,10 +13,11 @@ class Config:
     FLASK_ENV = os.getenv("FLASK_ENV", "development")
     PORT = int(os.getenv("PORT", 5000))
     
+    IS_SERVERLESS = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
     # Database Configuration
     DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/invoice_reconciliation")
     # SQLite fallback path for local zero-config development when PostgreSQL is not initialized
-    SQLITE_FALLBACK_PATH = BASE_DIR / "database" / "reconciliation.db"
+    SQLITE_FALLBACK_PATH = Path("/tmp/reconciliation.db") if IS_SERVERLESS else BASE_DIR / "database" / "reconciliation.db"
     
     # LLM Settings
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "rule-based").lower()
@@ -24,7 +25,7 @@ class Config:
     LLM_MODEL = os.getenv("LLM_MODEL", "gemini-1.5-flash")
     
     # Uploads
-    UPLOAD_FOLDER = BASE_DIR / os.getenv("UPLOAD_FOLDER", "backend/uploads")
+    UPLOAD_FOLDER = Path("/tmp/uploads") if IS_SERVERLESS else BASE_DIR / os.getenv("UPLOAD_FOLDER", "backend/uploads")
     MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 16 * 1024 * 1024)) # 16 MB
     ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "webp"}
     
