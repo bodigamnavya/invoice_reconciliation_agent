@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile & Diagnostics | ReconAI Enterprise</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo.svg" alt="ReconAI Logo" class="sidebar-logo">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Core Operations</div>
+        <a href="dashboard.html" class="nav-link-item">
+          <i class="bi bi-grid-1x2-fill"></i> Command Center
+        </a>
+        <a href="upload.html" class="nav-link-item">
+          <i class="bi bi-cloud-arrow-up-fill"></i> Upload & Process
+        </a>
+        <a href="history.html" class="nav-link-item">
+          <i class="bi bi-clock-history"></i> Audit History
+        </a>
+
+        <div class="nav-label" style="margin-top: 10px;">System & Master Data</div>
+        <a href="profile.html" class="nav-link-item active">
+          <i class="bi bi-person-gear"></i> Profile & Diagnostics
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Finance Analyst</div>
+          </div>
+          <button onclick="Auth.logout()" title="Logout" style="background:none; border:none; color:#94a3b8; cursor:pointer;">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="page-title-area">
+          <h1>Profile & System Diagnostics</h1>
+          <p>Active user session details, API status, and database connectivity</p>
+        </div>
+      </header>
+
+      <div class="page-content" style="max-width: 900px;">
+        
+        <!-- User Profile Card -->
+        <div class="recon-card" style="margin-bottom: 24px;">
+          <div class="card-header-flex">
+            <div>
+              <h3>Finance Officer Profile</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Authenticated session and governance role</p>
+            </div>
+            <button onclick="Auth.logout()" class="btn-recon btn-recon-danger btn-sm">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 24px; align-items: center; padding: 12px 0;">
+            <div class="user-avatar" style="width: 72px; height: 72px; font-size: 1.8rem;">AD</div>
+            <div style="flex: 1;">
+              <h2 id="prof-full-name" style="font-size: 1.4rem; margin-bottom: 4px;">Loading...</h2>
+              <div id="prof-email" class="mono" style="color: var(--text-muted); font-size: 0.95rem;">loading@finance.ai</div>
+              <div style="margin-top: 8px;">
+                <span id="prof-role-badge" class="badge bg-primary px-3 py-1">Finance Analyst</span>
+                <span class="badge bg-success px-3 py-1 ms-2">Session Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Diagnostics Card -->
+        <div class="recon-card">
+          <div class="card-header-flex">
+            <div>
+              <h3>System Architecture Diagnostics</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Live backend REST APIs and persistent database health</p>
+            </div>
+            <button onclick="runDiagnostics()" class="btn-recon btn-recon-outline btn-sm">
+              <i class="bi bi-arrow-clockwise"></i> Ping Services
+            </button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="doc-field-row" style="padding: 10px 0; border-bottom: 1px solid var(--border-light);">
+              <span class="doc-field-label"><i class="bi bi-hdd-network text-primary me-2"></i> Backend API Server:</span>
+              <span id="diag-api-status" class="doc-field-val"><span class="badge bg-success">HEALTHY (200 OK)</span></span>
+            </div>
+
+            <div class="doc-field-row" style="padding: 10px 0; border-bottom: 1px solid var(--border-light);">
+              <span class="doc-field-label"><i class="bi bi-database text-success me-2"></i> Database Connection:</span>
+              <span id="diag-db-status" class="doc-field-val"><span class="badge bg-success">CONNECTED</span></span>
+            </div>
+
+            <div class="doc-field-row" style="padding: 10px 0; border-bottom: 1px solid var(--border-light);">
+              <span class="doc-field-label"><i class="bi bi-robot text-warning me-2"></i> AI / LLM Reasoning Engine:</span>
+              <span id="diag-llm-status" class="doc-field-val font-semibold">Rule-Based Deterministic Fallback</span>
+            </div>
+
+            <div class="doc-field-row" style="padding: 10px 0;">
+              <span class="doc-field-label"><i class="bi bi-shield-lock text-info me-2"></i> Security Architecture:</span>
+              <span class="doc-field-val">JWT HS256 + Bcrypt Password Hashing</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      Auth.requireAuth();
+      const user = Auth.getUser() || {};
+      document.getElementById("prof-full-name").textContent = user.full_name || "Finance Controller";
+      document.getElementById("prof-email").textContent = user.email || "admin@finance.ai";
+      document.getElementById("prof-role-badge").textContent = user.role || "Senior Controller";
+      runDiagnostics();
+    });
+
+    async function runDiagnostics() {
+      // 1. Ping Health
+      try {
+        const res1 = await fetch(`${CONFIG.API_BASE.replace('/api', '')}/health`);
+        const data1 = await res1.json();
+        document.getElementById("diag-api-status").innerHTML = `<span class="badge bg-success">${data1.status.toUpperCase()} (v${data1.version})</span>`;
+        document.getElementById("diag-llm-status").textContent = `${data1.llm_provider.toUpperCase()} ENGINE`;
+      } catch (e) {
+        document.getElementById("diag-api-status").innerHTML = `<span class="badge bg-danger">OFFLINE</span>`;
+      }
+
+      // 2. Ping DB Health
+      try {
+        const res2 = await fetch(`${CONFIG.API_BASE.replace('/api', '')}/db-health`);
+        const data2 = await res2.json();
+        if (data2.status === "connected") {
+          document.getElementById("diag-db-status").innerHTML = `<span class="badge bg-success">CONNECTED (${data2.database_dialect.toUpperCase()})</span>`;
+        } else {
+          document.getElementById("diag-db-status").innerHTML = `<span class="badge bg-warning text-dark">OFFLINE / ERROR</span>`;
+        }
+      } catch (e) {
+        document.getElementById("diag-db-status").innerHTML = `<span class="badge bg-warning text-dark">SQLITE LOCAL DB</span>`;
+      }
+    }
+  </script>
+</body>
+</html>

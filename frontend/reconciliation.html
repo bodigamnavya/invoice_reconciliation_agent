@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reconciliation Inspector | ReconAI Enterprise</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo.svg" alt="ReconAI Logo" class="sidebar-logo">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Core Operations</div>
+        <a href="dashboard.html" class="nav-link-item">
+          <i class="bi bi-grid-1x2-fill"></i> Command Center
+        </a>
+        <a href="upload.html" class="nav-link-item">
+          <i class="bi bi-cloud-arrow-up-fill"></i> Upload & Process
+        </a>
+        <a href="history.html" class="nav-link-item">
+          <i class="bi bi-clock-history"></i> Audit History
+        </a>
+
+        <div class="nav-label" style="margin-top: 10px;">Intelligence & Vendors</div>
+        <a href="vendor.html" class="nav-link-item">
+          <i class="bi bi-building-check"></i> Vendor Risk Profiles
+        </a>
+
+        <div class="nav-label" style="margin-top: 10px;">System & Master Data</div>
+        <a href="profile.html" class="nav-link-item">
+          <i class="bi bi-person-gear"></i> Profile & Diagnostics
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Finance Controller</div>
+          </div>
+          <button onclick="Auth.logout()" title="Logout" style="background:none; border:none; color:#94a3b8; cursor:pointer;">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="page-title-area">
+          <h1>Reconciliation Inspector</h1>
+          <p>Multi-agent 3-way variance audit and decision engine</p>
+        </div>
+        <div class="topbar-actions" style="display: flex; gap: 10px;">
+          <button id="btn-generate-report" class="btn-recon btn-recon-primary btn-sm">
+            <i class="bi bi-file-earmark-pdf-fill"></i> Generate Audit Report
+          </button>
+          <a id="link-vendor-profile" href="vendor.html" class="btn-recon btn-recon-outline btn-sm">
+            <i class="bi bi-building"></i> Vendor Profile
+          </a>
+          <a href="history.html" class="btn-recon btn-recon-outline btn-sm">
+            <i class="bi bi-arrow-left"></i> History
+          </a>
+        </div>
+      </header>
+
+      <div class="page-content">
+        
+        <!-- Inspector Top Header Banner -->
+        <div class="inspector-header">
+          <div class="inspector-title-area">
+            <div style="font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">
+              Vendor Reconciliation Profile
+            </div>
+            <h2 id="recon-vendor-name" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <span>Apex Global Technologies</span>
+              <i class="bi bi-box-arrow-up-right" style="font-size: 1rem; color: #38bdf8;"></i>
+            </h2>
+            <div style="font-size: 0.95rem; color: #cbd5e1;">
+              Invoice Number: <span id="recon-invoice-num" class="mono font-semibold" style="color: #38bdf8;">INV-2026-001</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">Decision Status</div>
+              <div id="recon-status-badge">--</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">Risk Level</div>
+              <div id="recon-risk-badge">--</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">Risk Score</div>
+              <span id="recon-risk-score-val" class="badge bg-dark border font-semibold px-3 py-2" style="font-size: 0.9rem;">--/100</span>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;">Human State</div>
+              <span id="recon-human-action-badge" class="badge bg-secondary px-3 py-2">PENDING</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Recommendation Hero Box -->
+        <div class="ai-recommendation-box">
+          <div class="ai-pill-tag">
+            <i class="bi bi-robot"></i> Multi-Agent Decision Engine
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+            <div>
+              <h3 id="ai-final-decision-text">AI Evaluation Findings</h3>
+              <p id="ai-explanation-text">Analyzing multi-source discrepancies...</p>
+            </div>
+            <div style="text-align: right; background: rgba(255,255,255,0.08); padding: 12px 18px; border-radius: var(--radius-md); flex-shrink: 0;">
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Confidence</div>
+              <div id="ai-confidence-score" style="font-size: 1.5rem; font-weight: 800; color: #38bdf8;">95%</div>
+            </div>
+          </div>
+
+          <div class="ai-reason-item">
+            <strong style="color: #38bdf8;"><i class="bi bi-info-circle-fill"></i> Primary Finding:</strong>
+            <span id="ai-reason-text" style="color: #ffffff; margin-left: 6px;">--</span>
+          </div>
+
+          <div class="ai-reason-item" style="border-left-color: #34d399; margin-top: 10px;">
+            <strong style="color: #34d399;"><i class="bi bi-arrow-right-circle-fill"></i> Recommended Action:</strong>
+            <span id="ai-recommendation-text" style="color: #ffffff; margin-left: 6px;">--</span>
+          </div>
+        </div>
+
+        <!-- FEATURE 1: EXPLAINABLE AI AUDIT TRAIL -->
+        <div class="recon-card" style="margin-bottom: 24px; border-left: 4px solid #38bdf8;">
+          <div class="card-header-flex" style="margin-bottom: 16px;">
+            <div>
+              <h3 style="display: flex; align-items: center; gap: 8px;">
+                <i class="bi bi-search text-primary"></i> 🔍 Explainable AI Audit Trail
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0;">
+                Transparent deterministic factor breakdown: <strong>WHY did the system make this decision?</strong>
+              </p>
+            </div>
+            <div>
+              <span id="audit-trail-risk-tag" class="badge bg-dark border font-semibold px-3 py-2">Risk: --/100</span>
+            </div>
+          </div>
+
+          <!-- Numerical Discrepancy Matrix -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; background: #0f172a; padding: 16px; border-radius: var(--radius-md); border: 1px solid #1e293b;">
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Invoice Amount</div>
+              <div id="audit-inv-amt" style="font-size: 1.15rem; font-weight: 700; color: #ffffff;">₹0.00</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Approved PO Amount</div>
+              <div id="audit-po-amt" style="font-size: 1.15rem; font-weight: 700; color: #ffffff;">₹0.00</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">PO Variance</div>
+              <div id="audit-po-diff" style="font-size: 1.15rem; font-weight: 700; color: #38bdf8;">₹0.00</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Variance %</div>
+              <div id="audit-po-pct" style="font-size: 1.15rem; font-weight: 700; color: #38bdf8;">0.00%</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Disbursed Payment</div>
+              <div id="audit-pay-amt" style="font-size: 1.15rem; font-weight: 700; color: #ffffff;">₹0.00</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Payment Shortfall</div>
+              <div id="audit-pay-diff" style="font-size: 1.15rem; font-weight: 700; color: #38bdf8;">₹0.00</div>
+            </div>
+          </div>
+
+          <!-- Risk Factors Table -->
+          <h4 style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 10px;">
+            <i class="bi bi-shield-check"></i> Evaluated Risk Vectors & Penalties
+          </h4>
+          <div class="table-responsive" style="margin-bottom: 24px;">
+            <table class="recon-table">
+              <thead>
+                <tr>
+                  <th style="width: 220px;">Risk Factor Vector</th>
+                  <th style="width: 90px;">Points</th>
+                  <th style="width: 110px;">Status</th>
+                  <th>Evaluation Detail & Audit Finding</th>
+                </tr>
+              </thead>
+              <tbody id="audit-factors-table-body">
+                <tr><td colspan="4" class="text-center py-3 text-muted">Loading explainable factors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Audit Timeline -->
+          <h4 style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 12px;">
+            <i class="bi bi-clock-history"></i> Verification Pipeline Timeline & Execution Timestamps
+          </h4>
+          <div id="audit-timeline-container" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- 3-Way Reconciliation Comparison Cards -->
+        <div class="inspector-grid">
+          
+          <!-- Card 1: Invoice Data -->
+          <div class="doc-match-card" id="invoice-card">
+            <div class="doc-card-header">
+              <h4><i class="bi bi-file-earmark-text text-primary"></i> 1. Invoice Document</h4>
+              <span class="badge bg-light text-dark border">Source File</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Total Amount:</span>
+              <span class="doc-field-val" id="inv-total">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Subtotal:</span>
+              <span class="doc-field-val" id="inv-subtotal">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Tax / GST:</span>
+              <span class="doc-field-val" id="inv-tax">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Invoice Date:</span>
+              <span class="doc-field-val" id="inv-date">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Due Date:</span>
+              <span class="doc-field-val" id="inv-due-date">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Quoted PO:</span>
+              <span class="doc-field-val mono" id="inv-quoted-po">--</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Purchase Order Data -->
+          <div class="doc-match-card" id="po-card">
+            <div class="doc-card-header">
+              <h4><i class="bi bi-layers text-success"></i> 2. Purchase Order</h4>
+              <span class="badge bg-light text-dark border">Procurement</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">PO Number:</span>
+              <span class="doc-field-val mono" id="po-number-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Authorized Total:</span>
+              <span class="doc-field-val" id="po-total-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">PO Date:</span>
+              <span class="doc-field-val" id="po-date-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">PO Match Status:</span>
+              <span class="doc-field-val" id="po-match-status-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Variance Gap:</span>
+              <span class="doc-field-val" id="po-diff-val">--</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Banking Ledger Payment -->
+          <div class="doc-match-card" id="payment-card">
+            <div class="doc-card-header">
+              <h4><i class="bi bi-bank text-warning"></i> 3. Banking Ledger</h4>
+              <span class="badge bg-light text-dark border">Disbursement</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Payment Ref:</span>
+              <span class="doc-field-val mono" id="pay-ref-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Amount Disbursed:</span>
+              <span class="doc-field-val" id="pay-amount-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Payment Date:</span>
+              <span class="doc-field-val" id="pay-date-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Payment Method:</span>
+              <span class="doc-field-val" id="pay-method-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Settlement State:</span>
+              <span class="doc-field-val" id="pay-match-status-val">--</span>
+            </div>
+            <div class="doc-field-row">
+              <span class="doc-field-label">Outstanding Balance:</span>
+              <span class="doc-field-val" id="pay-diff-val">--</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Extracted Line Items -->
+        <div class="recon-card" style="margin-bottom: 24px;">
+          <div class="card-header-flex">
+            <div>
+              <h3>Extracted Line Items</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Parsed itemized goods and services from invoice document</p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="recon-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Item Description</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="line-items-body">
+                <tr><td colspan="5" class="text-center py-3 text-muted">Loading items...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Human in the Loop Action Bar -->
+        <div class="recon-card" style="border-top: 3px solid var(--primary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h3 style="margin-bottom: 4px;"><i class="bi bi-person-check-fill text-primary"></i> Human-in-the-Loop Governance</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Record final sign-off, escalate for controller audit, or reject invoice</p>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button id="btn-generate-report-bottom" class="btn-recon btn-recon-outline">
+                <i class="bi bi-file-earmark-pdf-fill"></i> Download PDF Report
+              </button>
+              <button id="btn-reject" class="btn-recon btn-recon-danger">
+                <i class="bi bi-x-circle-fill"></i> Reject Invoice
+              </button>
+              <button id="btn-review" class="btn-recon btn-recon-warning">
+                <i class="bi bi-flag-fill"></i> Escalate / Flag Review
+              </button>
+              <button id="btn-approve" class="btn-recon btn-recon-success">
+                <i class="bi bi-check-circle-fill"></i> Approve & Close
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/reconciliation.js"></script>
+</body>
+</html>

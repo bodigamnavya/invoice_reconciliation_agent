@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Invoice | ReconAI Enterprise</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo.svg" alt="ReconAI Logo" class="sidebar-logo">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Core Operations</div>
+        <a href="dashboard.html" class="nav-link-item">
+          <i class="bi bi-grid-1x2-fill"></i> Command Center
+        </a>
+        <a href="upload.html" class="nav-link-item active">
+          <i class="bi bi-cloud-arrow-up-fill"></i> Upload & Process
+        </a>
+        <a href="history.html" class="nav-link-item">
+          <i class="bi bi-clock-history"></i> Audit History
+        </a>
+
+        <div class="nav-label" style="margin-top: 10px;">Intelligence & Vendors</div>
+        <a href="vendor.html" class="nav-link-item">
+          <i class="bi bi-building-check"></i> Vendor Risk Profiles
+        </a>
+
+        <div class="nav-label" style="margin-top: 10px;">System & Master Data</div>
+        <a href="profile.html" class="nav-link-item">
+          <i class="bi bi-person-gear"></i> Profile & Diagnostics
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Finance Analyst</div>
+          </div>
+          <button onclick="Auth.logout()" title="Logout" style="background:none; border:none; color:#94a3b8; cursor:pointer;">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="page-title-area">
+          <h1>AI Invoice Processing Hub</h1>
+          <p>Upload multi-format invoice files for automated multi-agent extraction and reconciliation</p>
+        </div>
+      </header>
+
+      <div class="page-content" style="max-width: 900px; margin: 0 auto;">
+        
+        <!-- Upload Form Container -->
+        <div id="upload-form-area" class="recon-card">
+          <div class="card-header-flex">
+            <div>
+              <h3>Select or Drag Document</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Supported formats: PDF, PNG, JPG, JPEG, WEBP (Max: 16 MB)</p>
+            </div>
+          </div>
+
+          <div id="dropzone" class="upload-dropzone">
+            <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.webp">
+            <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+            <h4>Drag & Drop your invoice here</h4>
+            <p style="color: var(--text-muted); margin-top: 6px; font-size: 0.9rem;">or click to browse your computer</p>
+            <button type="button" class="btn-recon btn-recon-primary btn-sm" style="margin-top: 16px;">
+              <i class="bi bi-folder2-open"></i> Browse Files
+            </button>
+          </div>
+
+          <!-- Quick Test Demo Info -->
+          <div style="margin-top: 24px; padding: 18px; background-color: #f8fafc; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #1e293b; font-size: 0.9rem;">
+              <i class="bi bi-lightbulb-fill" style="color: #f59e0b;"></i> Quick Demo Invoices Ready for Upload:
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 6px;">
+              Pre-built test scenario PDFs are stored in the <code>sample_data/invoices/</code> folder:
+            </p>
+            <ul style="font-size: 0.82rem; color: #475569; margin-top: 8px; padding-left: 20px; line-height: 1.6;">
+              <li><code>1_perfect_match_INV-2026-001.pdf</code> - Perfect 3-way match (₹1,50,000)</li>
+              <li><code>2_payment_mismatch_INV-2026-002.pdf</code> - Partial payment shortfall (₹80,000 vs ₹85,000)</li>
+              <li><code>3_po_mismatch_INV-2026-003.pdf</code> - Unapproved surcharge higher than PO (₹90,000 vs ₹85,000)</li>
+              <li><code>4_duplicate_invoice_INV-2026-004.pdf</code> - Duplicate billing detection</li>
+              <li><code>5_anomaly_unusual_amount_INV-2026-005.pdf</code> - Statistical outlier spike (₹3,20,000 vs avg ₹45,000)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Animated Multi-Agent Pipeline Progress -->
+        <div id="progress-area" class="recon-card" style="display: none;">
+          <div class="card-header-flex">
+            <div>
+              <h3>Autonomous Multi-Agent Processing</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Document: <span id="uploaded-filename" class="mono font-semibold" style="color: var(--primary);">--</span></p>
+            </div>
+          </div>
+
+          <div class="pipeline-stepper">
+            
+            <div id="step-reading" class="step-item pending">
+              <div class="step-icon">1</div>
+              <div class="step-info">
+                <div class="step-title">Stage 1: Reading Invoice Document (OCR & PyMuPDF)</div>
+                <div class="step-desc">Extracting characters, geometry layout and token vectors</div>
+              </div>
+            </div>
+
+            <div id="step-extracting" class="step-item pending">
+              <div class="step-icon">2</div>
+              <div class="step-info">
+                <div class="step-title">Stage 2: Invoice Agent (Entity Extraction & Normalization)</div>
+                <div class="step-desc">Normalizing vendor, dates, tax amounts, line items, and invoice number</div>
+              </div>
+            </div>
+
+            <div id="step-matching" class="step-item pending">
+              <div class="step-icon">3</div>
+              <div class="step-info">
+                <div class="step-title">Stage 3: Matching Agent (PO 2-Way Reconciliation)</div>
+                <div class="step-desc">Cross-validating invoice line items and totals against registered Purchase Orders</div>
+              </div>
+            </div>
+
+            <div id="step-payment" class="step-item pending">
+              <div class="step-icon">4</div>
+              <div class="step-info">
+                <div class="step-title">Stage 4: Payment Agent (Ledger Transaction Discovery)</div>
+                <div class="step-desc">Identifying disbursements and calculating settlement gaps</div>
+              </div>
+            </div>
+
+            <div id="step-anomalies" class="step-item pending">
+              <div class="step-icon">5</div>
+              <div class="step-info">
+                <div class="step-title">Stage 5: Risk Agent (Multi-Vector Anomaly Engine)</div>
+                <div class="step-desc">Checking duplicates, vendor historical variance (Z-Score), and 0–100 risk score</div>
+              </div>
+            </div>
+
+            <div id="step-decision" class="step-item pending">
+              <div class="step-icon">6</div>
+              <div class="step-info">
+                <div class="step-title">Stage 6: Decision Agent (Synthesizing Recommendation)</div>
+                <div class="step-desc">Generating human-readable reason, natural language explanation & next action</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

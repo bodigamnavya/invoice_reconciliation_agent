@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Account | ReconAI Enterprise</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-body">
+
+  <div class="auth-glow-orb-1"></div>
+  <div class="auth-glow-orb-2"></div>
+
+  <div class="auth-card-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html">
+          <img src="assets/logo.svg" alt="ReconAI Logo" class="auth-brand-logo">
+        </a>
+        <h2>Create Account</h2>
+        <p>Register as a finance controller or reconciliation auditor</p>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="full_name">Full Name</label>
+          <input type="text" id="full_name" class="form-input" placeholder="e.g. Navya Sharma" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Work Email</label>
+          <input type="email" id="email" class="form-input" placeholder="navya@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="role">Role / Department</label>
+          <select id="role" class="form-input">
+            <option value="Senior Controller">Senior Controller</option>
+            <option value="Finance Analyst" selected>Finance Analyst</option>
+            <option value="Accounts Payable Lead">Accounts Payable Lead</option>
+            <option value="Auditor">Internal Auditor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="At least 6 characters" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" class="form-input" placeholder="Re-enter password" required>
+        </div>
+
+        <button type="submit" id="btn-reg-submit" class="btn-recon btn-recon-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+          <i class="bi bi-person-plus-fill"></i> Complete Registration
+        </button>
+      </form>
+
+      <div class="auth-footer-links">
+        Already registered? <a href="login.html" style="font-weight: 600;">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      Auth.checkAuthRedirect();
+
+      const form = document.getElementById("register-form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fullName = document.getElementById("full_name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const role = document.getElementById("role").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+        const submitBtn = document.getElementById("btn-reg-submit");
+
+        if (password !== confirmPassword) {
+          showToast("Passwords do not match.", "error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="bi bi-arrow-repeat spin"></i> Creating Account...`;
+
+        try {
+          await Auth.register(fullName, email, password, role);
+          showToast("Account created successfully! Redirecting...", "success");
+          setTimeout(() => window.location.href = "dashboard.html", 800);
+        } catch (err) {
+          showToast(err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="bi bi-person-plus-fill"></i> Complete Registration`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

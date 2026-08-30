@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReconAI | Autonomous Invoice-to-Payment Reconciliation Agent</title>
+  <!-- Google Fonts & Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .landing-nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(11, 19, 43, 0.85);
+      backdrop-filter: blur(12px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .landing-hero {
+      padding: 160px 24px 100px;
+      background: radial-gradient(circle at 50% 20%, #1c2541 0%, #0b132b 80%);
+      color: #ffffff;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-sky);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 900px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: #eff6ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .workflow-flow {
+      background: #0f172a;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      color: #ffffff;
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .flow-node {
+      flex: 1;
+      min-width: 160px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .flow-node h5 {
+      color: #ffffff;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    .flow-node p {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Landing Header Nav -->
+  <nav class="landing-nav">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="assets/logo.svg" alt="ReconAI Logo" height="40" style="filter: brightness(0) invert(1);">
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <a href="login.html" class="btn-recon btn-recon-outline" style="color: #ffffff; border-color: rgba(255,255,255,0.2);">Sign In</a>
+      <a href="dashboard.html" class="btn-recon btn-recon-primary">Launch Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="landing-hero">
+    <div class="hero-badge">
+      <i class="bi bi-cpu-fill"></i> Multi-Agent Financial Intelligence Platform
+    </div>
+    <h1 class="hero-title">Automate 3-Way Invoice & Payment Reconciliation</h1>
+    <p class="hero-subtitle">
+      Eliminate manual financial audits. Our autonomous agent extracts invoice data, validates against purchase orders and banking ledgers, detects anomalies and duplicate billings, and explains every variance with LLM-powered clarity.
+    </p>
+    <div class="hero-cta-group">
+      <a href="dashboard.html" class="btn-recon btn-recon-primary" style="padding: 14px 28px; font-size: 1rem;">
+        <i class="bi bi-speedometer2"></i> Open Command Center
+      </a>
+      <a href="upload.html" class="btn-recon btn-recon-outline" style="padding: 14px 28px; font-size: 1rem; color:#ffffff; border-color: rgba(255,255,255,0.3);">
+        <i class="bi bi-cloud-arrow-up"></i> Upload Invoice Demo
+      </a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section-container">
+    <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+      <span style="color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Enterprise Capabilities</span>
+      <h2 style="font-size: 2.2rem; margin-top: 8px;">Autonomous Financial Precision</h2>
+      <p style="color: var(--text-muted); margin-top: 8px;">Deterministic mathematical comparisons fused with generative multi-agent reasoning.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon-box"><i class="bi bi-file-earmark-pdf"></i></div>
+        <h3>Invoice Agent & OCR</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+          Ingests multi-format PDFs and scans. Accurately extracts invoice numbers, vendor names, line items, taxes, and subtotal figures.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-box" style="background:#ecfdf5; color:#10b981;"><i class="bi bi-layers-half"></i></div>
+        <h3>Matching Agent</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+          Performs automated 2-way and 3-way matching against database Purchase Orders with configurable tolerance controls.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-box" style="background:#fffbeb; color:#f59e0b;"><i class="bi bi-bank"></i></div>
+        <h3>Payment Agent</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+          Reconciles banking ledger disbursements, pinpointing full settlements, partial installment shortfalls, or overpayment balances.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-box" style="background:#fef2f2; color:#ef4444;"><i class="bi bi-shield-exclamation"></i></div>
+        <h3>5-Vector Risk Engine</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+          Scans for duplicate invoices, statistical pricing anomalies (Z-Score > 2.0), vendor compliance flags, and outputs a 0–100 risk score.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agentic Workflow Diagram -->
+  <section style="background-color: #f1f5f9; padding: 80px 24px;">
+    <div class="section-container" style="padding: 0;">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 30px;">
+        <span style="color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Autonomous Workflow</span>
+        <h2 style="font-size: 2.2rem; margin-top: 8px;">End-to-End Agentic Lifecycle</h2>
+      </div>
+
+      <div class="workflow-flow">
+        <div class="flow-node">
+          <i class="bi bi-upload" style="color: #38bdf8; font-size: 1.5rem;"></i>
+          <h5>1. Upload</h5>
+          <p>PDF / Image Input</p>
+        </div>
+        <div class="flow-node">
+          <i class="bi bi-file-text" style="color: #60a5fa; font-size: 1.5rem;"></i>
+          <h5>2. Invoice Agent</h5>
+          <p>OCR & Extraction</p>
+        </div>
+        <div class="flow-node">
+          <i class="bi bi-check2-square" style="color: #34d399; font-size: 1.5rem;"></i>
+          <h5>3. Matching Agent</h5>
+          <p>PO Verification</p>
+        </div>
+        <div class="flow-node">
+          <i class="bi bi-cash-stack" style="color: #fbbf24; font-size: 1.5rem;"></i>
+          <h5>4. Payment Agent</h5>
+          <p>Ledger Discovery</p>
+        </div>
+        <div class="flow-node">
+          <i class="bi bi-shield-shaded" style="color: #f87171; font-size: 1.5rem;"></i>
+          <h5>5. Risk Agent</h5>
+          <p>Anomaly Scoring</p>
+        </div>
+        <div class="flow-node">
+          <i class="bi bi-robot" style="color: #a78bfa; font-size: 1.5rem;"></i>
+          <h5>6. Decision Agent</h5>
+          <p>AI Explanation & Action</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background-color: #0b132b; color: #94a3b8; padding: 40px 24px; text-align: center; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.08);">
+    <p>&copy; 2026 ReconAI Enterprise. Full-Stack Autonomous Financial Reconciliation Agent.</p>
+  </footer>
+
+</body>
+</html>

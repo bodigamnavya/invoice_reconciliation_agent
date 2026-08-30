@@ -1,0 +1,32 @@
+[
+  {
+    "po_number": "PO-2026-101",
+    "vendor": "Apex Global Technologies",
+    "amount": 150000.0,
+    "status": "APPROVED"
+  },
+  {
+    "po_number": "PO-2026-102",
+    "vendor": "Nova Solutions Pvt Ltd",
+    "amount": 85000.0,
+    "status": "APPROVED"
+  },
+  {
+    "po_number": "PO-2026-103",
+    "vendor": "Quantum Logistics Corp",
+    "amount": 85000.0,
+    "status": "APPROVED"
+  },
+  {
+    "po_number": "PO-2026-104",
+    "vendor": "Starlight Media Services",
+    "amount": 40000.0,
+    "status": "APPROVED"
+  },
+  {
+    "po_number": "PO-2026-105",
+    "vendor": "Vertex Cloud Infra",
+    "amount": 45000.0,
+    "status": "APPROVED"
+  }
+]
