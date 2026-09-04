@@ -1,3 +1,4 @@
+# Core API
 Flask==3.0.3
 Flask-Cors==4.0.1
 PyJWT==2.8.0
@@ -6,4 +7,12 @@ SQLAlchemy==2.0.31
 psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 requests==2.32.3
-pypdf2==3.0.1
+
+# PDF reading — lightweight fallback for Vercel serverless
+# (PyMuPDF is heavier and only used on Render/local via lazy import)
+pypdf==4.3.1
+
+# PDF report generation — used by /api/reconciliation/<id>/report
+# Lazy-imported inside generate_audit_report_pdf so Vercel cold starts
+# are not affected if this is not installed, but it is required on Render.
+reportlab==4.2.0

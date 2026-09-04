@@ -8,8 +8,8 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     """
     Extracts text from a PDF file.
     Strategy:
-    1. Try PyMuPDF (fitz) if installed (local dev / Render)
-    2. Fallback to pypdf2 (lightweight, works on Vercel serverless)
+    1. Try PyMuPDF (fitz) if installed (local dev / Render — lazy import)
+    2. Fallback to pypdf (lightweight, works on Vercel serverless)
     3. Raw ASCII fallback
     """
     if not os.path.exists(pdf_path):
@@ -44,9 +44,9 @@ def extract_text_from_pdf(pdf_path: str) -> str:
             logger.warning(f"PyMuPDF processing failed on {pdf_path}: {e}")
         extracted_text = []  # reset for next strategy
 
-    # --- Strategy 2: pypdf2 (lightweight, Vercel-safe) ---
+    # --- Strategy 2: pypdf (lightweight, Vercel-safe; PyPI package: pypdf>=4) ---
     try:
-        from pypdf import PdfReader  # pypdf2 >= 3.x uses pypdf namespace
+        from pypdf import PdfReader  # modern pypdf package (PyPI: pypdf>=4)
     except ImportError:
         try:
             from PyPDF2 import PdfReader
