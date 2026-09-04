@@ -1,4 +1,4 @@
-import numpy as np
+from statistics import mean as py_mean
 from flask import Blueprint, jsonify, request
 from sqlalchemy import func
 from backend.models.database import SessionLocal
@@ -50,7 +50,7 @@ def calculate_vendor_metrics(vendor: Vendor, db_session) -> dict:
 
     amounts = [float(inv.total_amount) for inv in invoices if inv.total_amount is not None]
     total_value = round(sum(amounts), 2)
-    average_value = round(float(np.mean(amounts)), 2) if amounts else 0.0
+    average_value = round(py_mean(amounts), 2) if amounts else 0.0
 
     # Deterministic Vendor Risk Score Calculation (0-100)
     # Weights: High-Risk Invoices (+35), Duplicates (+45), Anomalies (+35), PO/Payment Mismatches (+20)

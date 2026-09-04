@@ -1,12 +1,6 @@
 import os
 import io
 from datetime import datetime, timezone
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, KeepTogether
-)
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib import colors
 from backend.models.reconciliation_model import ReconciliationResult
 from backend.utils.helpers import format_currency
 
@@ -16,6 +10,17 @@ class ReportService:
     @classmethod
     def generate_audit_report_pdf(cls, recon: ReconciliationResult) -> bytes:
         """Generates audit report PDF bytes for a given reconciliation result."""
+        # Lazy imports — reportlab is optional (not available on Vercel serverless)
+        try:
+            from reportlab.lib.pagesizes import letter
+            from reportlab.platypus import (
+                SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, KeepTogether
+            )
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.lib import colors
+        except ImportError:
+            raise RuntimeError("reportlab is not installed. PDF report generation is unavailable in serverless mode.")
+
         buffer = io.BytesIO()
         doc = SimpleDocTemplate(
             buffer,

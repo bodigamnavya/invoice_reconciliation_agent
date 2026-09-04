@@ -1,5 +1,5 @@
 import logging
-import numpy as np
+import math
 from backend.models.invoice_model import Invoice
 from backend.models.vendor_model import Vendor
 
@@ -166,8 +166,9 @@ class RiskAgent:
         amounts = [float(row[0]) for row in historical_invoices if row[0] is not None]
         
         if len(amounts) >= 3:
-            mean = np.mean(amounts)
-            std = np.std(amounts)
+            mean = sum(amounts) / len(amounts)
+            variance = sum((x - mean) ** 2 for x in amounts) / len(amounts)
+            std = math.sqrt(variance)
             if std > 0:
                 z_score = abs(invoice_total - mean) / std
                 if z_score >= 2.0 or (vendor_avg > 0 and invoice_total > vendor_avg * 2.2):
